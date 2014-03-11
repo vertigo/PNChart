@@ -70,16 +70,51 @@
     _xLabels = xLabels;
 
     if (_showLabel) {
-        _xLabelWidth = (self.frame.size.width - chartMargin*2)/[xLabels count];
-
-        for(int index = 0; index < xLabels.count; index++)
-        {
-            NSString* labelText = xLabels[index];
-            PNChartLabel * label = [[PNChartLabel alloc] initWithFrame:CGRectMake((index *  _xLabelWidth + chartMargin), self.frame.size.height - 30.0, _xLabelWidth, 20.0)];
-            [label setTextAlignment:NSTextAlignmentCenter];
-            label.text = labelText;
-            [_labels addObject:label];
-            [self addSubview:label];
+        if (self.isHorizontal) {
+            
+            float optimumLabelWidth = 0.0f;
+            
+            for (NSString *labelValue in xLabels) {
+                // FIXME: replace [UIFont boldSystemFontOfSize:11.0f] with a constant used by PNChartLabel
+                CGSize idealSize = [labelValue sizeWithFont:[UIFont boldSystemFontOfSize:11.0f] constrainedToSize:CGSizeMake(self.frame.size.width, self.frame.size.height)];
+                
+                if (idealSize.width > optimumLabelWidth) {
+                    optimumLabelWidth = idealSize.width;
+                }
+            }
+            
+            //FIXME: replace 40.0f with a maxLabelWidth constant
+            if (40.0f < optimumLabelWidth) {
+                optimumLabelWidth = 40.0f;
+            }
+            
+            _xLabelHeight = (self.frame.size.height - chartMargin*2)/[xLabels count];
+            _xLabelWidth = optimumLabelWidth;
+            
+            for(int index = 0; index < xLabels.count; index++)
+            {
+                NSString* labelText = xLabels[index];
+                PNChartLabel * label = [[PNChartLabel alloc] initWithFrame:CGRectMake(chartMargin,
+                                                                                      (index *  _xLabelHeight + chartMargin), //self.frame.size.height - 30.0,
+                                                                                      40.0f,
+                                                                                      _xLabelHeight)];
+                [label setTextAlignment:NSTextAlignmentCenter];
+                label.text = labelText;
+                [_labels addObject:label];
+                [self addSubview:label];
+            }
+        } else {
+            _xLabelWidth = (self.frame.size.width - chartMargin*2)/[xLabels count];
+            
+            for(int index = 0; index < xLabels.count; index++)
+            {
+                NSString* labelText = xLabels[index];
+                PNChartLabel * label = [[PNChartLabel alloc] initWithFrame:CGRectMake((index *  _xLabelWidth + chartMargin), self.frame.size.height - 30.0, _xLabelWidth, 20.0)];
+                [label setTextAlignment:NSTextAlignmentCenter];
+                label.text = labelText;
+                [_labels addObject:label];
+                [self addSubview:label];
+            }
         }
     }
 }
@@ -93,6 +128,7 @@
 {
     [self viewCleanupForCollection:_bars];
     CGFloat chartCavanHeight = self.frame.size.height - chartMargin * 2 - 40.0;
+    CGFloat chartCavanWidth = self.frame.size.width - chartMargin * 2 - 40.0;
     NSInteger index = 0;
 
     for (NSString * valueString in _yValues) {
@@ -100,11 +136,31 @@
 
         float grade = (float)value / (float)_yValueMax;
         PNBar * bar;
-        if (_showLabel) {
-            bar = [[PNBar alloc] initWithFrame:CGRectMake((index *  _xLabelWidth + chartMargin + _xLabelWidth * 0.25), self.frame.size.height - chartCavanHeight - 30.0, _xLabelWidth * 0.5, chartCavanHeight)];
-        }else{
-            bar = [[PNBar alloc] initWithFrame:CGRectMake((index *  _xLabelWidth + chartMargin + _xLabelWidth * 0.25), self.frame.size.height - chartCavanHeight , _xLabelWidth * 0.6, chartCavanHeight)];
+        float xPos, yPos, width, height;
+        
+        if (self.isHorizontal) {
+            xPos = self.frame.size.width - chartCavanWidth + _xLabelWidth;
+            yPos = (index * _xLabelHeight + chartMargin + _xLabelHeight * 0.25);
+            width = chartCavanWidth - _xLabelWidth;
+            height = _xLabelHeight * 0.6;
+            
+            if (_showLabel) {
+                xPos -= 30.0f;
+            }
+        } else {
+            xPos = (index * _xLabelWidth + chartMargin + _xLabelWidth * 0.25);
+            yPos = self.frame.size.height - chartCavanHeight;
+            width = _xLabelWidth * 0.5;
+            height = chartCavanHeight;
+            
+            if (_showLabel) {
+                yPos -= 30.0f;
+            }
         }
+        
+        bar = [[PNBar alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
+        bar.isHorizontal = self.isHorizontal;
+        
         bar.backgroundColor = _barBackgroundColor;
         bar.barColor = [self barColorAtIndex:index];
         bar.grade = grade;

@@ -33,8 +33,13 @@
 	_grade = grade;
 	UIBezierPath *progressline = [UIBezierPath bezierPath];
     
-    [progressline moveToPoint:CGPointMake(self.frame.size.width/2.0, self.frame.size.height)];
-	[progressline addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - grade) * self.frame.size.height)];
+    if (self.isHorizontal) {
+        [progressline moveToPoint:CGPointMake(0.0f, self.frame.size.height/2.0)];
+        [progressline addLineToPoint:CGPointMake((1 - grade) * self.frame.size.width, self.frame.size.height/2.0)];
+    } else {
+        [progressline moveToPoint:CGPointMake(self.frame.size.width/2.0, self.frame.size.height)];
+        [progressline addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - grade) * self.frame.size.height)];
+    }
 	
     [progressline setLineWidth:1.0];
     [progressline setLineCapStyle:kCGLineCapSquare];

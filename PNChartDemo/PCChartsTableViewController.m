@@ -105,6 +105,8 @@
         barChartLabel.textAlignment = NSTextAlignmentCenter;
         
         PNBarChart * barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 200.0)];
+        [barChart setIsHorizontal:YES];
+        
         barChart.backgroundColor = [UIColor clearColor];
         [barChart setXLabels:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5",@"SEP 6",@"SEP 7"]];
         [barChart setYValues:@[@1,@24,@12,@18,@30,@10,@21]];

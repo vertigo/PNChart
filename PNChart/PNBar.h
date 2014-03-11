@@ -11,6 +11,8 @@
 
 @interface PNBar : UIView
 
+@property (nonatomic) BOOL isHorizontal;
+
 @property (nonatomic) float grade;
 
 @property (nonatomic,strong) CAShapeLayer * chartLine;

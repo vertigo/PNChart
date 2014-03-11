@@ -19,6 +19,8 @@
  * This method will call and stroke the line in animation
  */
 
+@property (nonatomic) BOOL isHorizontal;
+
 -(void)strokeChart;
 
 @property (strong, nonatomic) NSArray * xLabels;
@@ -28,6 +30,8 @@
 @property (strong, nonatomic) NSArray * yValues;
 
 @property (nonatomic) CGFloat xLabelWidth;
+
+@property (nonatomic) CGFloat xLabelHeight;
 
 @property (nonatomic) int yValueMax;
 
