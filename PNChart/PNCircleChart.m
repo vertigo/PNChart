@@ -79,6 +79,10 @@
 		_animate = NO;
 		
 		_imageView = [[UIImageView alloc] initWithImage:image];
+		
+		if ([current intValue] == 0) {
+			_circleBG.strokeColor = [UIColor clearColor].CGColor;
+		}
 	}
 	
 	return self;
