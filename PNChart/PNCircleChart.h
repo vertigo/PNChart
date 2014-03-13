@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSNumber * current;
 @property (nonatomic, strong) NSNumber * lineWidth;
 @property (nonatomic) BOOL clockwise;
+@property (nonatomic) BOOL animate;
 
 @property(nonatomic,strong) CAShapeLayer * circle;
 @property(nonatomic,strong) CAShapeLayer * circleBG;

@@ -34,6 +34,7 @@
         _current = current;
         _strokeColor = PNFreshGreen;
 		_clockwise = clockwise;
+		_animate = YES;
 		
 		CGFloat startAngle = clockwise ? -90.0f : 270.0f;
 		CGFloat endAngle = clockwise ? -90.01f : 270.01f;
@@ -89,16 +90,28 @@
     _circleBG.strokeEnd = 1.0;
     _circle.strokeColor = _strokeColor.CGColor;
     
-    //Add Animation
-    CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    pathAnimation.duration = 1.0;
-    pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
-    pathAnimation.toValue = [NSNumber numberWithFloat:[_current floatValue]/[_total floatValue]];
-    [_circle addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
+	if (_animate) {
+		//Add Animation
+		CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+		pathAnimation.duration = 1.0;
+		pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
+		pathAnimation.toValue = [NSNumber numberWithFloat:[_current floatValue]/[_total floatValue]];
+		[_circle addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
+	}
+	
     _circle.strokeEnd   = [_current floatValue]/[_total floatValue];
     
-    [_gradeLabel countFrom:0 to:[_current floatValue]/[_total floatValue]*100 withDuration:1.0];
+	if (_animate) {
+		[_gradeLabel countFrom:0 to:[_current floatValue]/[_total floatValue]*100 withDuration:1.0];
+	} else {
+		if([_gradeLabel.format rangeOfString:@"%(.*)d" options:NSRegularExpressionSearch].location != NSNotFound || [_gradeLabel.format rangeOfString:@"%(.*)i"].location != NSNotFound )
+        {
+            _gradeLabel.text = [NSString stringWithFormat:_gradeLabel.format,[_total intValue]];
+        } else {
+            _gradeLabel.text = [NSString stringWithFormat:_gradeLabel.format,[_total floatValue]];
+        }
+	}
    
 }
 
