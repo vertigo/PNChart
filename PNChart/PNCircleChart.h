@@ -17,6 +17,8 @@
 -(void)strokeChart;
 - (id)initWithFrame:(CGRect)frame andTotal:(NSNumber *)total andCurrent:(NSNumber *)current andClockwise:(BOOL)clockwise;
 
+- (id)initWithFrame:(CGRect)frame andCurrent:(NSNumber *)current andImage:(UIImage *)image;
+
 @property (nonatomic, strong) UIColor *strokeColor;
 @property (nonatomic, strong) UIColor *labelColor;
 @property (nonatomic, strong) NSNumber * total;

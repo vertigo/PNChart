@@ -11,6 +11,7 @@
 
 @interface PNCircleChart () {
     UICountingLabel *_gradeLabel;
+    UIImageView *_imageView;
 }
 
 @end
@@ -68,7 +69,19 @@
     }
     
     return self;
-    
+}
+
+- (id)initWithFrame:(CGRect)frame andCurrent:(NSNumber *)current andImage:(UIImage *)image {
+	
+    self = [self initWithFrame:frame andTotal:@100 andCurrent:current andClockwise:YES];
+	
+	if (self) {
+		_animate = NO;
+		
+		_imageView = [[UIImageView alloc] initWithImage:image];
+	}
+	
+	return self;
 }
 
 -(void)strokeChart
@@ -76,14 +89,22 @@
     //Add count label
     
     [_gradeLabel setTextAlignment:NSTextAlignmentCenter];
-    [_gradeLabel setFont:[UIFont boldSystemFontOfSize:13.0f]];
+    [_gradeLabel setFont:[UIFont fontWithName:@"Helvetica Neue Light" size:18.0f ]];
     [_gradeLabel setTextColor:self.labelColor];
     [_gradeLabel setCenter:CGPointMake(self.center.x,self.center.y)];
     _gradeLabel.method = UILabelCountingMethodEaseInOut;
     _gradeLabel.format = @"%d%%";
+	
+    [self addSubview:_gradeLabel];
+	
+	if (_imageView) {
+		[_imageView setCenter:CGPointMake(self.center.x, self.center.y)];
+		[self addSubview:_imageView];
+		
+		[_gradeLabel setCenter:CGPointMake(self.center.x + self.frame.size.width * 0.1, self.center.y + self.frame.size.height * 0.85)];
+	}
    
     
-    [self addSubview:_gradeLabel];
     
     //Add circle params
     
@@ -109,9 +130,9 @@
 	} else {
 		if([_gradeLabel.format rangeOfString:@"%(.*)d" options:NSRegularExpressionSearch].location != NSNotFound || [_gradeLabel.format rangeOfString:@"%(.*)i"].location != NSNotFound )
         {
-            _gradeLabel.text = [NSString stringWithFormat:_gradeLabel.format,[_total intValue]];
+            _gradeLabel.text = [NSString stringWithFormat:_gradeLabel.format,[_current intValue]];
         } else {
-            _gradeLabel.text = [NSString stringWithFormat:_gradeLabel.format,[_total floatValue]];
+            _gradeLabel.text = [NSString stringWithFormat:_gradeLabel.format,[_current floatValue]];
         }
 	}
    
