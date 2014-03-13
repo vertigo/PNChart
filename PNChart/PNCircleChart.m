@@ -35,6 +35,7 @@
         _strokeColor = PNFreshGreen;
 		_clockwise = clockwise;
 		_animate = YES;
+		_hideLabel = NO;
 		
 		CGFloat startAngle = clockwise ? -90.0f : 270.0f;
 		CGFloat endAngle = clockwise ? -90.01f : 270.01f;
@@ -62,6 +63,7 @@
         [self.layer addSublayer:_circleBG];
 
 		_gradeLabel = [[UICountingLabel alloc] initWithFrame:CGRectMake(0, 0, 50.0, 50.0)];
+		_gradeLabel.hidden = _hideLabel;
         
     }
     
