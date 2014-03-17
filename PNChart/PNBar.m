@@ -34,11 +34,15 @@
 	UIBezierPath *progressline = [UIBezierPath bezierPath];
     
     if (self.isHorizontal) {
-        [progressline moveToPoint:CGPointMake(0.0f, self.frame.size.height/2.0)];
-        [progressline addLineToPoint:CGPointMake((1 - grade) * self.frame.size.width, self.frame.size.height/2.0)];
+		CGPoint start = CGPointMake(0, self.frame.size.height/2.0);
+		CGPoint end = CGPointMake(grade *self.frame.size.width, self.frame.size.height/2.0);
+        [progressline moveToPoint:start];
+        [progressline addLineToPoint:end];
     } else {
-        [progressline moveToPoint:CGPointMake(self.frame.size.width/2.0, self.frame.size.height)];
-        [progressline addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - grade) * self.frame.size.height)];
+		CGPoint start = CGPointMake(self.frame.size.width/2.0, self.frame.size.height);
+		CGPoint end = CGPointMake(self.frame.size.width/2.0, (1 - grade) * self.frame.size.height);
+        [progressline moveToPoint:start];
+        [progressline addLineToPoint:end];
     }
 	
     [progressline setLineWidth:1.0];
