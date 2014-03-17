@@ -48,7 +48,7 @@
 -(void)setYLabels:(NSArray *)yLabels
 {
     NSInteger max = 0;
-    for (NSString * valueString in yLabels) {
+    for (NSNumber *valueString in yLabels) {
         NSInteger value = [valueString integerValue];
         if (value > max) {
             max = value;
@@ -57,9 +57,9 @@
     }
 
     //Min value for Y label
-    if (max < 5) {
-        max = 5;
-    }
+//    if (max < 5) {
+//        max = 5;
+//    }
 
     _yValueMax = (int)max;
 }
@@ -131,7 +131,7 @@
     CGFloat chartCavanWidth = self.frame.size.width - chartMargin * 2 - 40.0;
     NSInteger index = 0;
 
-    for (NSString * valueString in _yValues) {
+    for (NSNumber *valueString in _yValues) {
         float value = [valueString floatValue];
 
         float grade = (float)value / (float)_yValueMax;
