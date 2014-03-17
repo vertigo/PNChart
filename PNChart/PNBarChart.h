@@ -19,8 +19,6 @@
  * This method will call and stroke the line in animation
  */
 
-@property (nonatomic) BOOL isHorizontal;
-
 -(void)strokeChart;
 
 @property (strong, nonatomic) NSArray * xLabels;
@@ -42,5 +40,7 @@
 @property (nonatomic, strong) UIColor * barBackgroundColor;
 
 @property (nonatomic) BOOL showLabel;
+
+@property (nonatomic) BOOL isHorizontal;
 
 @end
